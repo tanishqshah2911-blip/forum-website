@@ -18,6 +18,7 @@ import ProductCanteen from './pages/ProductCanteen';
 import ProductVayu from './pages/ProductVayu';
 import ProductAttendance from './pages/ProductAttendance';
 import ProductAssure from './pages/ProductAssure';
+import ProductPhotoHub from './pages/ProductPhotoHub';
 
 import About from './pages/About';
 import HRMS from './pages/HRMS';
@@ -57,6 +58,7 @@ function RoutedView() {
         <Route path="/products/vayu" element={<ProductVayu />} />
         <Route path="/products/attendance" element={<ProductAttendance />} />
         <Route path="/products/assure" element={<ProductAssure />} />
+        <Route path="/products/photohub" element={<ProductPhotoHub />} />
 
         <Route path="/about" element={<About />} />
         <Route path="/hrms" element={<HRMS />} />

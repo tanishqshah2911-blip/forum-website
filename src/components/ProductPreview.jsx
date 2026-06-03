@@ -165,6 +165,32 @@ const ICON = {
       <line x1="9" y1="4" x2="9" y2="6" stroke="currentColor" strokeWidth="1.2" />
       <line x1="15" y1="4" x2="15" y2="6" stroke="currentColor" strokeWidth="1.2" />
     </g>
+  ),
+  camera: (
+    <g fill="none" stroke="currentColor" strokeWidth="1.4">
+      <rect x="3.5" y="7.5" width="17" height="12" rx="1.6" />
+      <path d="M 9 7.5 L 10 5.5 L 14 5.5 L 15 7.5" />
+      <circle cx="12" cy="13.5" r="3.5" />
+      <circle cx="12" cy="13.5" r="1.4" fill="currentColor" />
+      <circle cx="17.5" cy="10" r="0.6" fill="currentColor" />
+    </g>
+  ),
+  album: (
+    <g fill="none" stroke="currentColor" strokeWidth="1.2">
+      <rect x="4" y="4" width="7" height="7" rx="0.8" />
+      <rect x="13" y="4" width="7" height="7" rx="0.8" fill="currentColor" opacity="0.3" />
+      <rect x="4" y="13" width="7" height="7" rx="0.8" fill="currentColor" opacity="0.3" />
+      <rect x="13" y="13" width="7" height="7" rx="0.8" />
+    </g>
+  ),
+  share: (
+    <g fill="none" stroke="currentColor" strokeWidth="1.4">
+      <circle cx="6" cy="12" r="2.2" />
+      <circle cx="18" cy="6" r="2.2" />
+      <circle cx="18" cy="18" r="2.2" />
+      <line x1="8" y1="11" x2="16" y2="7" />
+      <line x1="8" y1="13" x2="16" y2="17" />
+    </g>
   )
 };
 
@@ -211,6 +237,17 @@ const PREVIEWS = {
       { icon: ICON.cloud,   label: 'Cloud' },
       { icon: ICON.chart,   label: 'Reports' },
       { icon: ICON.sync,    label: 'Lifecycle' }
+    ]
+  },
+  photohub: {
+    center: ICON.camera,
+    features: [
+      { icon: ICON.cloud, label: 'Storage' },
+      { icon: ICON.sync,  label: 'Auto-backup' },
+      { icon: ICON.phone, label: 'Mobile' },
+      { icon: ICON.album, label: 'Albums' },
+      { icon: ICON.share, label: 'Share' },
+      { icon: ICON.lock,  label: 'Private' }
     ]
   }
 };

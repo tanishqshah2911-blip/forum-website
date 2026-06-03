@@ -3,18 +3,41 @@ import { useEffect, useRef, useState } from 'react';
 /**
  * "Everything connected. Everything visible."
  *
- * Premium 4-panel flow that explains The Forum's full system:
- *   Build → Connect → Monitor → Automate
+ * Premium 4-panel flow that walks through the customer journey
+ * of working with The Forum:
+ *   Connect → Build → Monitor → Automate
  *
  * Click any panel to expand it: the selected card grows wider,
  * brightens its border, and reveals its full description. The
  * other three stay compact (icon + title only) but visible.
- * "Build" is selected by default. Reveals once on scroll-in.
+ * "Connect" is selected by default. Reveals once on scroll-in.
  *
  * Pure CSS / SVG, no canvas.
  */
 
 const PANELS = [
+  {
+    id: 'connect',
+    title: 'Connect',
+    body: "Reach out by phone, website, or email — tell us your idea, and we'll start building something like this.",
+    icon: (
+      <g fill="none" stroke="currentColor" strokeWidth="1.4">
+        {/* Central hub */}
+        <circle cx="24" cy="24" r="4" fill="currentColor" />
+        <circle cx="24" cy="24" r="8" opacity="0.5" />
+        {/* Satellite nodes */}
+        <circle cx="8"  cy="10" r="2.4" fill="currentColor" />
+        <circle cx="40" cy="10" r="2.4" fill="currentColor" />
+        <circle cx="8"  cy="38" r="2.4" fill="currentColor" />
+        <circle cx="40" cy="38" r="2.4" fill="currentColor" />
+        {/* Connector lines hub → satellites */}
+        <line x1="24" y1="24" x2="9"  y2="11" opacity="0.6" />
+        <line x1="24" y1="24" x2="39" y2="11" opacity="0.6" />
+        <line x1="24" y1="24" x2="9"  y2="37" opacity="0.6" />
+        <line x1="24" y1="24" x2="39" y2="37" opacity="0.6" />
+      </g>
+    )
+  },
   {
     id: 'build',
     title: 'Build',
@@ -32,28 +55,6 @@ const PANELS = [
         <path d="M 12 32 L 20 22 L 28 26 L 36 16" strokeWidth="1.6" />
         <circle cx="12" cy="32" r="1.6" fill="currentColor" />
         <circle cx="36" cy="16" r="1.6" fill="currentColor" />
-      </g>
-    )
-  },
-  {
-    id: 'connect',
-    title: 'Connect',
-    body: 'Biometrics, RFID, sensors, databases, devices, APIs, and cloud / on-prem systems.',
-    icon: (
-      <g fill="none" stroke="currentColor" strokeWidth="1.4">
-        {/* Central hub */}
-        <circle cx="24" cy="24" r="4" fill="currentColor" />
-        <circle cx="24" cy="24" r="8" opacity="0.5" />
-        {/* Satellite nodes */}
-        <circle cx="8"  cy="10" r="2.4" fill="currentColor" />
-        <circle cx="40" cy="10" r="2.4" fill="currentColor" />
-        <circle cx="8"  cy="38" r="2.4" fill="currentColor" />
-        <circle cx="40" cy="38" r="2.4" fill="currentColor" />
-        {/* Connector lines hub → satellites */}
-        <line x1="24" y1="24" x2="9"  y2="11" opacity="0.6" />
-        <line x1="24" y1="24" x2="39" y2="11" opacity="0.6" />
-        <line x1="24" y1="24" x2="9"  y2="37" opacity="0.6" />
-        <line x1="24" y1="24" x2="39" y2="37" opacity="0.6" />
       </g>
     )
   },
@@ -108,8 +109,10 @@ const PANELS = [
 export default function EcosystemSection() {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
-  /* Click-to-expand selection. "build" is selected by default. */
-  const [selected, setSelected] = useState('build');
+  /* Click-to-expand selection. "connect" is selected by default
+     so the first step of the journey is open when the section
+     first comes into view. */
+  const [selected, setSelected] = useState('connect');
 
   useEffect(() => {
     const el = ref.current;
@@ -144,11 +147,11 @@ export default function EcosystemSection() {
     <section className="ecos section">
       <div className="container">
         <div className="section-head">
-          <p className="eyebrow">The Forum connected ecosystem</p>
-          <h2>Everything connected. Everything visible.</h2>
+          <p className="eyebrow">How we work</p>
+          <h2>From your first call to a system that runs itself.</h2>
           <p className="section-lede">
-            From canteen terminals and attendance devices to ERP, CCTV, and maintenance
-            workflows — The Forum connects every system into one clear operational layer.
+            Every Forum project moves through four stages — you reach out, we build,
+            you watch it run live, and the workflows take over.
           </p>
         </div>
 

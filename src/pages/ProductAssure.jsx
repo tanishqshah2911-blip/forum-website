@@ -17,7 +17,7 @@ const capabilities = [
 ];
 
 const process = [
-  { title: 'Discover', body: "We map your asset categories, locations, lifecycle, and team structure — so Assure fits the way you actually run inventory." },
+  { title: 'Discover', body: "We map your asset categories, locations, lifecycle, and team structure — so Assure It fits the way you actually run inventory." },
   { title: 'Configure', body: "Set up categories, custom fields, locations, roles, and integrations. Signed off before any data moves." },
   { title: 'Migrate', body: 'Existing inventory — spreadsheets, ERP exports, paper records — cleaned, mapped, and migrated with full validation.' },
   { title: 'Tag', body: "Print and apply barcode / QR / RFID labels on every asset. We can do this with you on-site for the initial rollout." },
@@ -26,9 +26,9 @@ const process = [
 ];
 
 const faq = [
-  { q: 'What kind of assets can Assure track?', a: 'Any kind — IT equipment, machinery, vehicles, furniture, consumables, custom categories. Each category gets its own custom fields and workflows tuned to how you actually track it.' },
+  { q: 'What kind of assets can Assure It track?', a: 'Any kind — IT equipment, machinery, vehicles, furniture, consumables, custom categories. Each category gets its own custom fields and workflows tuned to how you actually track it.' },
   { q: 'Barcode, QR, or RFID — which should we use?', a: 'Barcode is cheapest and fastest to deploy. QR is best for mixed teams since any phone scans it. RFID is best for high-volume facilities where you want walk-by audits. Mix-and-match is fully supported.' },
-  { q: 'Can it integrate with our ERP / finance system?', a: 'Yes — Assure integrates with most major ERP and accounting systems (Tally, SAP, Oracle, Zoho, custom). Asset purchases, depreciation, and write-offs flow automatically.' },
+  { q: 'Can it integrate with our ERP / finance system?', a: 'Yes — Assure It integrates with most major ERP and accounting systems (Tally, SAP, Oracle, Zoho, custom). Asset purchases, depreciation, and write-offs flow automatically.' },
   { q: 'What about migrating data from our current system?', a: "Add the Data Migration option. We clean, map, and validate your existing data — spreadsheets, ERP exports, paper records — before go-live so nothing is lost in the move." },
   { q: 'Multi-location and multi-entity?', a: "Yes. We support multi-location and multi-entity setups with per-site rules, transfer workflows, and consolidated reporting." },
   { q: 'Can we track depreciation for tax compliance?', a: 'Yes — built-in depreciation methods (straight-line, written-down value, custom) with tax-ready reports for Indian and international standards.' },
@@ -39,22 +39,22 @@ const faq = [
 export default function ProductAssure() {
   return (
     <>
-      <Breadcrumb trail={[{ to: '/products', label: 'Products' }, { label: 'Assure' }]} />
+      <Breadcrumb trail={[{ to: '/products', label: 'Products' }, { label: 'Assure It' }]} />
       <DetailHero
-        eyebrow="Product · Assure"
+        eyebrow="Product · Assure It"
         title="Every asset, accounted for."
         accentWord="accounted"
-        lede="Assure is a complete inventory management system for corporate teams. Track every device, asset, and consumable across your organization — from procurement to retirement, with full lifecycle history, location, owner, and condition recorded for every item. Built for IT departments, ops teams, and admins who need to know exactly what they have, where it is, and who's using it."
+        lede="Assure It is a complete inventory management system for corporate teams. Track every device, asset, and consumable across your organization — from procurement to retirement, with full lifecycle history, location, owner, and condition recorded for every item. Built for IT departments, ops teams, and admins who need to know exactly what they have, where it is, and who's using it."
         primaryCta="Get a Quote"
       />
       <CapabilitiesSection eyebrow="Capabilities" title="Know what you have. Where it is. Who has it." items={capabilities} alt={true} />
-      <ProcessSection steps={process} title="Six steps. No surprises." eyebrow="How Assure works" />
+      <ProcessSection steps={process} title="Six steps. No surprises." eyebrow="How Assure It works" />
       <FAQSection items={faq} />
       <CTASection
         title="Let's get your inventory in order."
         lede="Send us your build, your asset list, or just a description of what you need to track — we'll take it from there."
         email="tfxautomation@gmail.com"
-        subject="Assure Inquiry"
+        subject="Assure It Inquiry"
       />
     </>
   );

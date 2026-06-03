@@ -55,11 +55,18 @@ const PRODUCTS = [
     desc: 'Biometric attendance automation with face, fingerprint, and RFID-based punch-in, employee logs, reporting, and real-time dashboard visibility.'
   },
   {
-    name: 'Assure',
+    name: 'Assure It',
     href: '/products/assure',
     previewType: 'assure',
     chips: ['Asset lifecycle', 'Barcode · QR · RFID', 'ERP integration'],
-    desc: "Every asset, accounted for. Assure is a complete inventory management system for corporate teams — track every device, asset, and consumable across your organization, from procurement to retirement, with full lifecycle history."
+    desc: "Every asset, accounted for. Assure It is a complete inventory management system for corporate teams — track every device, asset, and consumable across your organization, from procurement to retirement, with full lifecycle history."
+  },
+  {
+    name: 'PhotoHub',
+    href: '/products/photohub',
+    previewType: 'photohub',
+    chips: ['Photo backup', 'Cloud storage', 'Mobile · Web', 'Affordable plans'],
+    desc: "All your photos, one place, fair pricing. PhotoHub is affordable cloud storage for your memories — automatic backups from any device, smart albums, and full-resolution access anytime, without the premium price tag of the big platforms."
   }
 ];
 

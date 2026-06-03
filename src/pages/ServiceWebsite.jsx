@@ -34,9 +34,9 @@ export default function ServiceWebsite() {
         <div className="container">
           <div className="section-head">
             <p className="eyebrow">Case study</p>
-            <h2>Assure — website &amp; AI bot.</h2>
+            <h2>Assure It — website &amp; AI bot.</h2>
             <p className="section-lede">
-              We built Assure's website and paired it with an intelligent chatbot trained on their business — handling customer queries, capturing leads, and freeing up the team for higher-value work. Full case study coming soon.
+              We built Assure It's website and paired it with an intelligent chatbot trained on their business — handling customer queries, capturing leads, and freeing up the team for higher-value work. Full case study coming soon.
             </p>
           </div>
         </div>

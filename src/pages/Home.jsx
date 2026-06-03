@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../contexts/ThemeContext';
 import EcosystemSection from '../components/EcosystemSection';
 import StatsCounter from '../components/StatsCounter';
+import CustomersStrip from '../components/CustomersMarquee';
 
 /* ──────────────────────────────────────────────────────────────
  *  HERO ANIMATION BACKUP (do NOT delete)
@@ -46,6 +48,17 @@ export default function Home() {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const heroTriggeredRef = useRef(false);
 
+  /* Theme-aware hero video. Each palette has its own purpose-built
+     video file so light mode isn't a CSS hack over the dark video.
+     Both files are ping-pong-stitched (forward + reversed) for
+     seamless looping. The `key` prop on the <video> below forces
+     React to fully remount when the theme toggles, so the browser
+     picks up the new src cleanly without partial-state weirdness. */
+  const { theme } = useTheme();
+  const heroVideoSrc = theme === 'light'
+    ? '/videos/hero_background_light_pingpong.mp4'
+    : '/videos/hero_background_pingpong.mp4';
+
   useEffect(() => {
     const t = window.setTimeout(() => {
       if (heroTriggeredRef.current) return;
@@ -56,6 +69,11 @@ export default function Home() {
   }, []);
 
   const handleVideoReady = () => {
+    /* The light video's slowdown is now baked into the file
+       itself (setpts=2.0 in ffmpeg), so no playbackRate
+       manipulation is needed here — JS-driven playback-rate
+       changes cause uneven decode/render in some browsers.
+       Native-speed playback of a pre-slowed file is smooth. */
     if (heroTriggeredRef.current) return;
     heroTriggeredRef.current = true;
     window.setTimeout(() => setHeroLoaded(true), 100);
@@ -77,8 +95,13 @@ export default function Home() {
             no visible jump. Single video element, no crossfade,
             no JS, no transition layers. */}
         <video
+          /* key forces a full remount when the theme toggles so
+             the new src is loaded cleanly. The parent Home
+             component stays mounted, so heroTriggeredRef is
+             preserved and the entrance animation doesn't replay. */
+          key={heroVideoSrc}
           className="hero-video"
-          src="/videos/hero_background_pingpong.mp4"
+          src={heroVideoSrc}
           autoPlay
           muted
           loop
@@ -140,6 +163,12 @@ export default function Home() {
       {/* Animated stats — numbers count up when the section
           enters view. Years · Cities · Customers · End Users */}
       <StatsCounter />
+
+      {/* Clients — single horizontal strip of brand-tinted
+          logos, no heading. Sits right after Stats so the
+          "10 customers engaged" number is immediately
+          backed up by the actual names. */}
+      <CustomersStrip />
 
       {/* What We Do — single section that now contains two
           stacked subsections: Services first, Products below.

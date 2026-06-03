@@ -44,15 +44,15 @@ html[data-theme="light"] {
   --bg:         #f5efe2;                       /* warm ivory page bg */
   --bg-alt:     #ece4d2;                       /* slightly deeper warm cream */
   --surface:    #fbf6ec;                       /* card / surface (frosted ivory) */
-  --fg:         #1a1f29;                       /* deep charcoal text */
+  --fg:         #222831;                       /* brand spacegrey (--charcoal) */
   --fg-muted:   rgba(34, 40, 49, 0.68);
   --fg-dim:     rgba(34, 40, 49, 0.46);
   --border:     rgba(133, 102, 56, 0.22);      /* warm bronze hairlines */
   --border-strong: rgba(133, 102, 56, 0.42);
   --accent:     #8a6a32;                       /* rich muted bronze — readable on ivory */
-  --btn-primary-bg: #1a1f29;                   /* dark charcoal pill */
+  --btn-primary-bg: #222831;                   /* brand spacegrey pill */
   --btn-primary-fg: #f5efe2;
-  --btn-ghost-fg:   #1a1f29;
+  --btn-ghost-fg:   #222831;
   --shadow: 0 12px 28px rgba(72, 56, 28, 0.10),
             0 2px 4px  rgba(72, 56, 28, 0.06);
 }
@@ -137,17 +137,22 @@ a:hover { opacity: 0.75; }
 
 .brand-mark {
   display: inline-block;
-  width: 26px;
-  height: 26px;
+  /* The brand mark is now a full lockup (TF monogram + "The Forum"
+     wordmark + tagline) instead of a single square monogram, so it
+     sizes by height with auto width to preserve the lockup's
+     aspect ratio. */
+  height: 44px;
+  width: auto;
+  max-width: 220px;
   color: var(--accent);
   flex-shrink: 0;
   object-fit: contain;
   vertical-align: middle;
   user-select: none;
 }
-.site-footer .brand-mark { width: 22px; height: 22px; }
+.site-footer .brand-mark { height: 34px; max-width: 170px; }
 @media (max-width: 760px) {
-  .brand-mark { width: 22px; height: 22px; }
+  .brand-mark { height: 34px; max-width: 170px; }
 }
 
 /* In light mode, the beige logo would blend with the cream background.

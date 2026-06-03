@@ -122,9 +122,12 @@ export default function Header() {
     <>
       <header className="site-header">
         <div className="container nav">
-          <Link to="/" className="brand">
+          <Link to="/" className="brand" aria-label="The Forum — home">
+            {/* The Logo image is a full lockup (TF monogram + "The
+                Forum" wordmark + tagline), so we no longer render a
+                separate text label next to it — that would duplicate
+                the wordmark. */}
             <Logo className="brand-mark" />
-            <span className="brand-name">The Forum</span>
           </Link>
           <nav className="nav-links" aria-label="Primary">
             {NAV.map(item => renderLink(item))}

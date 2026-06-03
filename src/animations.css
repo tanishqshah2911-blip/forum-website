@@ -77,15 +77,19 @@
    cubic-bezier(0.22, 1, 0.36, 1) ease-out. Drives every card,
    section block, and content body on every page. */
 .reveal {
+  /* Snappy fade-up. Was 720ms with a scale-up and a translate
+     of 16px which, combined with the staggered grid cascade
+     below, made cards on the Services / Products pages look
+     like they were limping in one by one. Now: tighter
+     translate, no scale, much shorter duration. */
   opacity: 0;
-  transform: translate3d(0, 16px, 0) scale(0.992);
-  transition: opacity 720ms cubic-bezier(0.22, 1, 0.36, 1),
-              transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translate3d(0, 8px, 0);
+  transition: opacity 320ms ease-out,
+              transform 320ms ease-out;
 }
 .reveal.is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0);
 }
 
 /* When a .section-head enters view, stagger its children so
@@ -198,24 +202,17 @@ p .accent::after,
 
 
 /* ─── 7. Grid stagger delays ────────────────────────────────
-   When sibling cards in a grid all enter view, they cascade
-   in one after the next. */
-.grid > .reveal.is-visible:nth-child(2)  { transition-delay: 70ms; }
-.grid > .reveal.is-visible:nth-child(3)  { transition-delay: 140ms; }
-.grid > .reveal.is-visible:nth-child(4)  { transition-delay: 210ms; }
-.grid > .reveal.is-visible:nth-child(5)  { transition-delay: 280ms; }
-.grid > .reveal.is-visible:nth-child(6)  { transition-delay: 350ms; }
-.grid > .reveal.is-visible:nth-child(7)  { transition-delay: 420ms; }
-.grid > .reveal.is-visible:nth-child(8)  { transition-delay: 490ms; }
-.grid > .reveal.is-visible:nth-child(9)  { transition-delay: 560ms; }
-.grid > .reveal.is-visible:nth-child(10) { transition-delay: 630ms; }
-.grid > .reveal.is-visible:nth-child(11) { transition-delay: 700ms; }
-
-.process-grid > .reveal.is-visible:nth-child(2) { transition-delay: 90ms; }
-.process-grid > .reveal.is-visible:nth-child(3) { transition-delay: 180ms; }
-.process-grid > .reveal.is-visible:nth-child(4) { transition-delay: 270ms; }
-.process-grid > .reveal.is-visible:nth-child(5) { transition-delay: 360ms; }
-.process-grid > .reveal.is-visible:nth-child(6) { transition-delay: 450ms; }
+   Cascade removed. The old per-card transition-delays (up to
+   700ms on the 11th card) meant on Products + Services pages
+   you'd watch cards limp in one by one for over a second.
+   Now every card in a grid reveals together — clean and
+   immediate. Process-step cards keep a short cascade
+   because they're a sequence and the order matters. */
+.process-grid > .reveal.is-visible:nth-child(2) { transition-delay: 60ms; }
+.process-grid > .reveal.is-visible:nth-child(3) { transition-delay: 120ms; }
+.process-grid > .reveal.is-visible:nth-child(4) { transition-delay: 180ms; }
+.process-grid > .reveal.is-visible:nth-child(5) { transition-delay: 240ms; }
+.process-grid > .reveal.is-visible:nth-child(6) { transition-delay: 300ms; }
 
 
 /* ─── 8. Hero entrance — cascade fade-up on load ────────────
@@ -4364,13 +4361,32 @@ html[data-theme="light"] .product-card-clean:hover {
   margin: 0;
 }
 
-/* Three-column body */
+/* Tagline strip CTA button */
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+.footer-top-cta {
+  margin-top: 0.6rem;
+}
+
+/* Four-column body — Contact | Products | Services | Company */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1fr 1.4fr;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.75rem);
   align-items: start;
-  padding-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+/* Vertical link list — one link per row, used in the Products
+   / Services / Company columns. Overrides the default 2-col
+   .footer-link-list (which is kept for legacy compatibility). */
+.footer-link-list-vertical {
+  grid-template-columns: 1fr !important;
+  gap: 0.55rem !important;
 }
 
 /* Generic column padding/separation */
@@ -4441,7 +4457,14 @@ html[data-theme="light"] .product-card-clean:hover {
   transform: translateX(2px);
 }
 
-/* — Map column — */
+/* — Map row — sits below the 4-column grid as a full-width
+   strip rather than crammed into one grid column. Aspect is
+   wider (24:9) so the map reads as a band, not a square box. */
+.footer-map-row {
+  margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+/* — Map (legacy .footer-col-map still styled for fallback) — */
 .footer-col-map {
   position: relative;
 }
@@ -4449,7 +4472,7 @@ html[data-theme="light"] .product-card-clean:hover {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 24 / 9;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
@@ -4492,15 +4515,26 @@ html[data-theme="light"] .product-card-clean:hover {
 }
 .footer-map-pill svg { width: 12px; height: 12px; color: var(--accent); }
 
-/* Bottom strip — brand + copy */
+/* Bottom strip — brand + copy on the left, social + legal on
+   the right. */
 .site-footer-rich .footer-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding-top: 1rem;
+  gap: 1.5rem;
+  padding-top: 1.25rem;
   border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+  flex-wrap: wrap;
 }
+.footer-bottom-left,
+.footer-bottom-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-bottom-right { gap: 1.25rem; }
+
 .site-footer-rich .footer-brand {
   display: inline-flex;
   align-items: center;
@@ -4512,23 +4546,70 @@ html[data-theme="light"] .product-card-clean:hover {
   margin: 0;
 }
 
+/* Social icons row */
+.footer-social {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.footer-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  color: color-mix(in srgb, var(--text, #dfd0b8) 70%, transparent);
+  text-decoration: none;
+  transition: color 220ms ease, background 220ms ease, border-color 220ms ease, transform 220ms ease;
+}
+.footer-social-link:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transform: translateY(-2px);
+}
+.footer-social-link svg { width: 16px; height: 16px; }
+
+/* Legal links */
+.footer-legal {
+  margin: 0;
+  font-size: 0.78rem;
+  color: color-mix(in srgb, var(--text, #dfd0b8) 50%, transparent);
+}
+.footer-legal a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+.footer-legal a:hover { color: var(--accent); }
+
 /* — Responsive — */
 @media (max-width: 1024px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
+    /* 2 cols: Contact full-width on row 1, then 3 link cols on row 2 */
+    grid-template-columns: repeat(3, 1fr);
   }
-  .footer-col-map {
+  .footer-col-contact {
     grid-column: 1 / -1;
   }
-  .footer-map { aspect-ratio: 21 / 9; }
+  .footer-map { aspect-ratio: 16 / 6; }
 }
 @media (max-width: 640px) {
   .footer-grid { grid-template-columns: 1fr; }
+  .footer-col-contact { grid-column: auto; }
   .footer-link-list { grid-template-columns: 1fr 1fr; }
+  .footer-link-list-vertical { grid-template-columns: 1fr !important; }
   .site-footer-rich .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
   }
+  .footer-map { aspect-ratio: 16 / 9; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4564,7 +4645,12 @@ html[data-theme="light"] body {
     radial-gradient(ellipse at 20% -10%, color-mix(in srgb, #f9f3e3 80%, transparent), transparent 60%),
     radial-gradient(ellipse at 90% 110%, color-mix(in srgb, #ede2cc 80%, transparent), transparent 60%),
     var(--bg);
-  background-attachment: fixed;
+  /* background-attachment: fixed was here — it forced the
+     browser to repaint the entire viewport on every scroll
+     frame, which made light mode noticeably laggier than dark
+     mode (the hero felt especially heavy because the video
+     was also rendering). Letting the gradient scroll with the
+     content removes the per-frame full-page repaint cost. */
 }
 
 /* — Buttons — dark-charcoal primary, soft outline ghost — */
@@ -4602,20 +4688,31 @@ html[data-theme="light"] .section.alt {
 }
 
 /* — Cards (Products / Services / Capabilities) —
-   Ivory frosted card on the warm bg, with a subtle bronze
-   hairline + soft warm shadow on hover. */
+   Solid ivory card on the warm bg, with a subtle bronze
+   hairline + soft warm shadow on hover.
+
+   Was previously a translucent rgba(255,250,240,0.78) panel
+   with backdrop-filter: blur(6px) saturate(106%). On pages
+   with several visible cards (Services has 6, Products has 4)
+   that put multiple backdrop-filter regions on screen at once,
+   which thrashes the GPU compositor and starves the hero video
+   of decode time — the user reported scroll + video stutter in
+   light mode specifically. Going fully opaque with no backdrop
+   filter makes every card a flat solid rectangle: cheapest
+   possible compositing. The visual difference at 0.78 vs solid
+   is negligible against the cream bg. */
 html[data-theme="light"] .product-card,
 html[data-theme="light"] .capability-card,
 html[data-theme="light"] .process-step,
 html[data-theme="light"] .card,
 html[data-theme="light"] .glass-card {
-  background: rgba(255, 250, 240, 0.78);
+  background: #fdf7e8;
   border: 1px solid rgba(133, 102, 56, 0.18);
   box-shadow:
     0 8px 20px rgba(72, 56, 28, 0.06),
     0 1px 0 rgba(255, 255, 255, 0.6) inset;
-  backdrop-filter: blur(6px) saturate(106%);
-  -webkit-backdrop-filter: blur(6px) saturate(106%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 html[data-theme="light"] .product-card-clean:hover {
   box-shadow:
@@ -4628,7 +4725,7 @@ html[data-theme="light"] .product-card-clean:hover {
 html[data-theme="light"] .product-name,
 html[data-theme="light"] .capability-card h3,
 html[data-theme="light"] .process-step h3 {
-  color: #1a1f29;
+  color: #222831;
 }
 html[data-theme="light"] .product-desc,
 html[data-theme="light"] .capability-card p,
@@ -4649,7 +4746,8 @@ html[data-theme="light"] .hero-title,
 html[data-theme="light"] .page-title,
 html[data-theme="light"] .section-head h2,
 html[data-theme="light"] .section-head h3 {
-  color: #14181f;
+  /* Brand charcoal (--charcoal #222831) — never pure black. */
+  color: var(--charcoal);
 }
 html[data-theme="light"] .accent::after {
   /* keep underline draw bronze instead of cream */
@@ -4784,7 +4882,7 @@ html[data-theme="light"] .heb-dock-l {
   color: rgba(34, 40, 49, 0.55);
 }
 html[data-theme="light"] .heb-dock-v {
-  color: #1a1f29;
+  color: #222831;
 }
 html[data-theme="light"] .heb-dock-v-live { color: #2c8a4f; }
 html[data-theme="light"] .heb-dock-v-sync { color: #3a5e8a; }
@@ -4802,7 +4900,9 @@ html[data-theme="light"] .heb-console::before {
 /* — EcosystemSection (Build / Connect / Monitor / Automate) —
    Ivory glass panels with bronze accent on the active state. */
 html[data-theme="light"] .ecos-panel {
-  background: rgba(255, 250, 240, 0.78);
+  /* Solid bg instead of rgba(...,0.78) — cuts per-frame alpha
+     compositing when scrolling past the 4-panel ecosystem row. */
+  background: #fdf7e8;
   border-color: rgba(133, 102, 56, 0.20);
 }
 html[data-theme="light"] .ecos-panel:hover {
@@ -4883,7 +4983,7 @@ html[data-theme="light"] .site-footer-rich::before {
   );
 }
 html[data-theme="light"] .footer-top .footer-title {
-  color: #1a1f29;
+  color: #222831;
 }
 html[data-theme="light"] .footer-col-heading {
   color: var(--accent);
@@ -4916,7 +5016,7 @@ html[data-theme="light"] .footer-map iframe {
   filter: grayscale(0.1) brightness(1.02) contrast(1);
 }
 html[data-theme="light"] .footer-map-pill {
-  color: #1a1f29;
+  color: #222831;
   background: rgba(255, 250, 240, 0.92);
   border-color: rgba(133, 102, 56, 0.40);
 }
@@ -4926,6 +5026,24 @@ html[data-theme="light"] .site-footer-rich .footer-bottom {
 }
 html[data-theme="light"] .site-footer-rich .footer-copy {
   color: rgba(34, 40, 49, 0.55);
+}
+/* Social + legal — light-mode parity for the new bottom-strip
+   bits. Bronze hairlines + spacegrey text on the cream bg. */
+html[data-theme="light"] .footer-social-link {
+  background: rgba(255, 250, 240, 0.6);
+  border-color: rgba(133, 102, 56, 0.32);
+  color: rgba(34, 40, 49, 0.72);
+}
+html[data-theme="light"] .footer-social-link:hover {
+  color: var(--accent);
+  background: rgba(255, 250, 240, 0.95);
+  border-color: rgba(133, 102, 56, 0.55);
+}
+html[data-theme="light"] .footer-legal {
+  color: rgba(34, 40, 49, 0.6);
+}
+html[data-theme="light"] .footer-legal a:hover {
+  color: var(--accent);
 }
 
 /* — Header — clean ivory glass on scroll — */
@@ -4943,13 +5061,13 @@ html[data-theme="light"] .nav-link.active {
   color: var(--accent);
 }
 html[data-theme="light"] .brand-name {
-  color: #1a1f29;
+  color: #222831;
 }
 
 /* — Theme toggle — soft border, bronze accent on hover — */
 html[data-theme="light"] .theme-toggle {
   border: 1px solid rgba(133, 102, 56, 0.30);
-  color: #1a1f29;
+  color: #222831;
 }
 html[data-theme="light"] .theme-toggle:hover {
   background: rgba(133, 102, 56, 0.10);
@@ -4968,7 +5086,7 @@ html[data-theme="light"] input,
 html[data-theme="light"] textarea {
   background: rgba(255, 250, 240, 0.85);
   border: 1px solid rgba(133, 102, 56, 0.24);
-  color: #1a1f29;
+  color: #222831;
 }
 html[data-theme="light"] .input:focus,
 html[data-theme="light"] input:focus,
@@ -5093,31 +5211,86 @@ html[data-theme="light"] .site-footer-rich {
    The .heb-* rules elsewhere in this file are preserved for the
    revert path documented in src/pages/Home.jsx.) */
 
-/* Light-mode adjustments — warm cream overlay instead of charcoal */
-html[data-theme="light"] .hero-video {
-  filter: brightness(0.95) saturate(0.95);
+/* Light-mode hero — Home.jsx swaps in a purpose-built light
+   video (hero_background_light_pingpong.mp4) when the theme is
+   light, so the video plays natively and we don't need any CSS
+   blending tricks here. We just give .hero-clean a warm cream
+   gradient as a fallback that shows while the video loads, and
+   we tone down the overlay (the bright cream video doesn't need
+   the strong center scrim that the dark video uses). */
+html[data-theme="light"] .hero-clean {
+  background:
+    radial-gradient(ellipse at 20% -10%, color-mix(in srgb, #f9f3e3 80%, transparent), transparent 60%),
+    radial-gradient(ellipse at 90% 110%, color-mix(in srgb, #ede2cc 80%, transparent), transparent 60%),
+    var(--bg);
+  border-bottom: 1px solid rgba(133, 102, 56, 0.14);
+}
+
+/* ──────────────────────────────────────────────────────────
+   Light-mode hero text — force readable dark colors on every
+   text element in the hero. Without these, the per-word
+   keyframes (heroWordWhere / heroWordMeets etc) and the
+   gradient-text effect on "innovation" can leave the words
+   in cream/transparent states that wash into the bright
+   cream video behind them. !important + high specificity
+   makes sure the override always wins. */
+html[data-theme="light"] .hero-clean .eyebrow {
+  color: var(--accent) !important;
+}
+html[data-theme="light"] .hero-clean .hero-title,
+html[data-theme="light"] .hero-clean .hero-title-words,
+html[data-theme="light"] .hero-clean .hero-title-words .word,
+html[data-theme="light"] .hero-clean .hero-title-words .word.word-where,
+html[data-theme="light"] .hero-clean .hero-title-words .word.word-meets {
+  /* Brand charcoal — same spacegrey as the rest of the site */
+  color: var(--charcoal) !important;
+}
+/* Both italic-accent words ("innovation", "engineering") sit
+   in DARKER bronze in light mode (#5e4720, deeper than the
+   default --accent #8a6a32) so they hold up against the
+   bright cream/bronze patches of the video. Gradient-text
+   trick is dropped here for a flat high-contrast color. */
+html[data-theme="light"] .hero-clean .hero-title-words .word .accent,
+html[data-theme="light"] .hero-clean .hero-title-words .word.word-innovation .accent,
+html[data-theme="light"] .hero-clean .hero-title-words .word.word-engineering .accent {
+  color: #5e4720 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-text-fill-color: #5e4720 !important;
+  -webkit-background-clip: border-box !important;
+          background-clip: border-box !important;
+  text-shadow: none !important;
+}
+html[data-theme="light"] .hero-clean .hero-sub {
+  /* Brand charcoal — never pure black. */
+  color: var(--charcoal) !important;
 }
 html[data-theme="light"] .hero-video-overlay {
   background:
+    /* top fade for navbar legibility */
     linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--bg) 80%, transparent) 0%,
-      transparent 18%,
+      color-mix(in srgb, var(--bg) 70%, transparent) 0%,
+      transparent 16%,
       transparent 100%
     ),
+    /* CENTER CREAM SCRIM — lightens the video specifically
+       behind the headline + subtitle so dark text actually
+       has contrast. Without this the bright cream/bronze
+       patches of the video swallow the words. */
     radial-gradient(
-      ellipse 60% 45% at 50% 50%,
-      color-mix(in srgb, var(--bg) 60%, transparent) 0%,
-      color-mix(in srgb, var(--bg) 22%, transparent) 60%,
+      ellipse 65% 55% at 50% 50%,
+      color-mix(in srgb, var(--bg) 88%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 50%,
       transparent 100%
     ),
+    /* bottom fade into the next section */
     linear-gradient(
       to bottom,
-      transparent 60%,
-      color-mix(in srgb, var(--bg) 60%, transparent) 85%,
+      transparent 62%,
+      color-mix(in srgb, var(--bg) 55%, transparent) 86%,
       var(--bg) 100%
-    ),
-    color-mix(in srgb, var(--bg) 30%, transparent);
+    );
 }
 
 /* Mobile — keep video performant + crop the frame nicely */
@@ -5600,10 +5773,11 @@ html[data-theme="light"] .hero-video-overlay {
 
 .wwd-options {
   display: grid;
-  grid-template-columns: 1fr;
+  /* Services on the left, Products on the right. The block now
+     fills the full .container (1160px) so it matches the width
+     of the ecosystem panels and stats block above. */
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.4rem;
-  max-width: 880px;
-  margin: 0 auto;
 }
 .wwd-option {
   /* Hash-jumps from navbar land below the sticky header */
@@ -5612,6 +5786,213 @@ html[data-theme="light"] .hero-video-overlay {
 
 @media (max-width: 720px) {
   .wwd-options {
+    /* Stack on phones so each card still reads comfortably */
+    grid-template-columns: 1fr;
     gap: 1rem;
   }
+}
+
+
+/* ─── 70. Left-alignment lock — every section below the hero
+   ──────────────────────────────────────────────────────────
+   Every section heading + lede on the home page now sits flush
+   left. The hero is the only exception (it stays centered as
+   designed in .hero-clean-inner).
+
+   Sections covered:
+     • .ecos                 — Connect → Build → Monitor → Automate
+     • #what-we-do           — Services + Products option cards
+     • .stats-section        — "Built for connected operations."
+     • .home-cta-section     — "Let's build your connected system."
+
+   We also pull the home-cta button row to the left so the
+   buttons line up under the heading instead of centering. */
+.ecos .section-head,
+#what-we-do .section-head,
+.stats-section .section-head.stats-head,
+.home-cta-section .section-head.home-cta-head,
+.customers-section .section-head {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+.home-cta-section .home-cta-actions {
+  justify-content: flex-start;
+}
+
+
+/* ─── 72. Customers / Clients — minimal brand-tinted strip ──
+   Single horizontal row of 4 client logos. No section heading,
+   no name labels — the logos do the talking, matching the
+   reference style. Brand-integrated colors (not pure
+   grayscale): logos render as cream silhouettes against the
+   dark-mode navy and as dark-navy silhouettes against the
+   light-mode cream. Hover reveals the logo's actual color
+   plus a tiny lift. */
+.customers-section {
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+.customers-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  flex-wrap: wrap;
+}
+
+/* Each customer cell is colorless — just a flex column. The
+   actual visible "box" is the logo image inside it, which
+   brings its own background colour from the PNG file.
+
+   Capped at 200px so the row reads as a compact strip of
+   small rectangular tiles, not a row of giant cards. */
+.customer-cell {
+  flex: 0 1 200px;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.7rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.customer-cell:hover {
+  transform: translateY(-3px);
+}
+
+/* The actual logo "box" — uniform aspect ratio across cells so
+   the row reads as a tidy strip even with logos of different
+   native sizes. overflow:hidden + radius gives clean rounded
+   corners while object-fit: cover on the img inside makes the
+   logo's own background fill the whole box. */
+.customer-logo-box {
+  width: 100%;
+  /* 16:9 — clean rectangular tile, clearly wider than tall.
+     At a 200px cell width, the box is ~200×113 — small and
+     tidy, not a giant card. Logos use object-fit: contain so
+     none get cropped, just centered within the rectangle. */
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+/* Client name shown below each logo — small, uppercase, with
+   subtle letter-spacing so it reads as a label, not body copy.
+   Brightens slightly when the cell is hovered to mirror the
+   card's hover lift. */
+.customer-name-label {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  line-height: 1.3;
+  transition: color 280ms ease;
+}
+.customer-cell:hover .customer-name-label {
+  color: var(--fg);
+}
+
+.customer-logo-img {
+  /* Logo sits inside the box at native aspect, never cropped.
+     The container's background-color is set per-client (inline
+     style) to match the logo PNG's own background, so the
+     space around the logo blends seamlessly into one surface.
+     Padding is tight so the logo fills as much of the cell as
+     possible — small / low-res logos like Privi need every
+     pixel they can get. */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  padding: 0.35rem 0.5rem;
+}
+
+/* Fallback placeholder shown while a real logo file isn't
+   in /public/clients yet — sized to fill the .customer-logo-box
+   so empty cells stay uniform with filled ones. */
+.customer-logo-fallback {
+  width: 100%;
+  height: 100%;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--fg) 65%, transparent);
+}
+
+@media (max-width: 720px) {
+  .customers-row {
+    gap: 1.5rem 1.25rem;
+    justify-content: center;
+  }
+  .customer-cell { flex: 0 0 calc(50% - 1rem); }
+  /* Box keeps its 2:1 aspect ratio at mobile widths too,
+     so the logo continues to fill its container cleanly. */
+}
+
+
+/* ─── 71. Light-mode card color match (Services / Products)
+   ──────────────────────────────────────────────────────────
+   styles.css inverts a.card-link to charcoal in light mode (so
+   it pops against the cream background). That inversion now
+   clashes with the ecosystem panels right above, which are
+   ivory-glass with a bronze hairline. We re-skin the two
+   What-we-do cards to the same ivory-glass treatment so the
+   whole light-mode page reads as one consistent palette.
+   Dark mode is untouched. */
+html[data-theme="light"] a.card-link.wwd-option {
+  /* Solid bg for cheap compositing; matches the other card
+     surfaces in light mode. */
+  background: #fdf7e8;
+  border: 1px solid rgba(133, 102, 56, 0.20);
+  box-shadow:
+    0 8px 20px rgba(72, 56, 28, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-theme="light"] a.card-link.wwd-option:hover {
+  border-color: rgba(133, 102, 56, 0.45);
+  box-shadow:
+    0 14px 28px rgba(72, 56, 28, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+/* Text colors flip back to the dark-on-ivory defaults */
+html[data-theme="light"] a.card-link.wwd-option h3 {
+  color: var(--fg);
+}
+html[data-theme="light"] a.card-link.wwd-option:hover h3 {
+  color: var(--accent);
+}
+html[data-theme="light"] a.card-link.wwd-option p {
+  color: var(--fg-muted);
+}
+html[data-theme="light"] a.card-link.wwd-option .card-num {
+  color: var(--fg-dim);
+}
+html[data-theme="light"] a.card-link.wwd-option .card-cta {
+  color: var(--fg);
+  opacity: 0.9;
+}
+html[data-theme="light"] a.card-link.wwd-option:hover .card-cta {
+  color: var(--accent);
+  opacity: 1;
 }
